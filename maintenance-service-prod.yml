@@ -4,19 +4,26 @@ spring:
   datasource:
     username: root
     password: 12345
-    url: jdbc:mysql://192.168.1.102:3306/maintenancedb-t1?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/maintenancedb-t1
   jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
     hibernate:
       ddl-auto: update
   kafka:
     producer:
-      bootstrap-servers: http://192.168.1.102:9092
+      bootstrap-servers: http://localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   cloud:
     openfeign:
       circuitbreaker:
         enabled: true
+
+server:
+  port: 0
+
 eureka:
   client:
     fetch-registry: true
@@ -24,13 +31,12 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
   instance:
-    instance-id: ${spring.application.name}:${random.value}}
+    instance-id: ${spring.application.name}:${random.value}
     prefer-ip-address: true
-server:
-  port: 0
+
 resilience4j:
   retry:
     instances:
-      retry-maintenance:
-        max-attempts: 5
-        wait-duration: 30s
+      carAvailability:
+        maxAttempts: 5
+        waitDuration: 10s

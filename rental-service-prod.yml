@@ -13,7 +13,7 @@ spring:
       ddl-auto: update
   kafka:
     producer:
-      bootstrap-servers: http://192.168.1.102:9092
+      bootstrap-servers: http://localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   cloud:
@@ -35,9 +35,7 @@ server:
 resilience4j:
   retry:
     instances:
-      inventory-retry:
-        max-attempts: 5
-        wait-duration: 10s
-      payment-retry:
-        max-attempts: 10
-        wait-duration: 15s
+      flightSearch:
+        maxAttempts: 5
+        waitDuration: 5s
+
