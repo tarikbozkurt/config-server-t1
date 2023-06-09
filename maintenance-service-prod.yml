@@ -4,7 +4,7 @@ spring:
   datasource:
     username: root
     password: 12345
-    url: jdbc:mysql://localhost:3306/maintenancedb-t1
+    url: jdbc:mysql://localhost:3306/maintenancedb-t1?createDatabaseIfNotExist=true
   jpa:
     properties:
       hibernate:
@@ -20,10 +20,6 @@ spring:
     openfeign:
       circuitbreaker:
         enabled: true
-
-server:
-  port: 0
-
 eureka:
   client:
     fetch-registry: true
@@ -31,12 +27,13 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
   instance:
-    instance-id: ${spring.application.name}:${random.value}
+    instance-id: ${spring.application.name}:${random.value}}
     prefer-ip-address: true
-
+server:
+  port: 0
 resilience4j:
   retry:
     instances:
-      carAvailability:
-        maxAttempts: 5
-        waitDuration: 10s
+      retry-maintenance:
+        max-attempts: 5
+        wait-duration: 30s

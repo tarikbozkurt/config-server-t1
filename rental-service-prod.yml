@@ -35,7 +35,9 @@ server:
 resilience4j:
   retry:
     instances:
-      flightSearch:
-        maxAttempts: 5
-        waitDuration: 5s
-
+      inventory-retry:
+        max-attempts: 5
+        wait-duration: 10s
+      payment-retry:
+        max-attempts: 10
+        wait-duration: 15s
